@@ -55,14 +55,16 @@
 <div class="container">
     <h1>Jesteśmy razem już ❤️</h1>
     <div id="timer">Ładowanie...</div>
-    <button onclick="playRandom()">Puść coś dla nas 🎵</button>
+    <button onclick="playNext()">Puść coś dla nas 🎵</button>
 </div>
 
 <audio id="audioPlayer"></audio>
 
 <script>
+    // Start związku
     const startDate = new Date("2024-05-31T19:11:00");
 
+    // Funkcja licznika
     function updateTimer() {
         const now = new Date();
         const diff = now - startDate;
@@ -77,26 +79,23 @@
     }
 
     setInterval(updateTimer, 1000);
-    updateTimer();
+    updateTimer(); // natychmiastowa aktualizacja po załadowaniu
 
-    const songs = [
-        "audio/1.mp3",
-        "audio/2.mp3",
-        "audio/3.mp3",
-        "audio/4.mp3",
-        "audio/5.mp3",
-        "audio/6.mp3",
-        "audio/7.mp3",
-        "audio/8.mp3",
-        "audio/9.mp3",
-        "audio/10.mp3"
-    ];
+    // Lista utworów mp3 1-10
+    const songs = [];
+    for (let i = 1; i <= 10; i++) {
+        songs.push(`audio/${i}.mp3`);
+    }
 
-    function playRandom() {
-        const randomIndex = Math.floor(Math.random() * songs.length);
+    let currentIndex = 0;
+
+    // Funkcja odtwarzania kolejnego utworu cyklicznie
+    function playNext() {
         const player = document.getElementById("audioPlayer");
-        player.src = songs[randomIndex];
+        player.src = songs[currentIndex];
         player.play();
+
+        currentIndex = (currentIndex + 1) % songs.length;
     }
 </script>
 
