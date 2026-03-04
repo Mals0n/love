@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nasz Czas ❤️</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .container {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 50px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    #timer {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    button {
+        padding: 15px 30px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        background: white;
+        color: #ff4f81;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Jesteśmy razem już ❤️</h1>
+    <div id="timer">Ładowanie...</div>
+    <button onclick="playRandom()">Puść coś dla nas 🎵</button>
+</div>
+
+<audio id="audioPlayer"></audio>
+
+<script>
+    const startDate = new Date("2024-05-31T19:11:00");
+
+    function updateTimer() {
+        const now = new Date();
+        const diff = now - startDate;
+
+        const seconds = Math.floor(diff / 1000) % 60;
+        const minutes = Math.floor(diff / (1000 * 60)) % 60;
+        const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+        document.getElementById("timer").innerHTML =
+            `${days} dni ${hours} godzin ${minutes} minut ${seconds} sekund`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    const songs = [
+        "audio/1.mp3",
+        "audio/2.mp3",
+        "audio/3.mp3",
+        "audio/4.mp3",
+        "audio/5.mp3"
+    ];
+
+    function playRandom() {
+        const randomIndex = Math.floor(Math.random() * songs.length);
+        const player = document.getElementById("audioPlayer");
+        player.src = songs[randomIndex];
+        player.play();
+    }
+</script>
+
+</body>
+</html>
