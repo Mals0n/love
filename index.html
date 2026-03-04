@@ -85,29 +85,15 @@
         songs.push(`audio/${i}.mp3`);
     }
 
-    const lastPlayed = []; // pamięta ostatnie 4 utwory
+    let currentIndex = 0; // pamięta który utwór leci
 
     function playNext() {
-        let available = songs.filter((_, idx) => !lastPlayed.includes(idx));
-
-        // Jeśli dostępnych jest mniej niż 1, resetujemy "pamięć ostatnich 4"
-        if (available.length === 0) {
-            lastPlayed.length = 0;
-            available = [...songs];
-        }
-
-        // losujemy indeks w dostępnych
-        const randomSong = available[Math.floor(Math.random() * available.length)];
-        const songIndex = songs.indexOf(randomSong);
-
-        // odtwarzamy
         const player = document.getElementById("audioPlayer");
-        player.src = randomSong;
+        player.src = songs[currentIndex];
         player.play();
 
-        // zapisujemy w historii ostatnich 4
-        lastPlayed.push(songIndex);
-        if (lastPlayed.length > 4) lastPlayed.shift(); // zachowujemy tylko 4 ostatnie
+        // przechodzimy do następnego utworu cyklicznie
+        currentIndex = (currentIndex + 1) % songs.length;
     }
 </script>
 
