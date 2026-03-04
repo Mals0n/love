@@ -61,10 +61,8 @@
 <audio id="audioPlayer"></audio>
 
 <script>
-    // Start związku
     const startDate = new Date("2024-05-31T19:11:00");
 
-    // Funkcja licznika
     function updateTimer() {
         const now = new Date();
         const diff = now - startDate;
@@ -79,23 +77,37 @@
     }
 
     setInterval(updateTimer, 1000);
-    updateTimer(); // natychmiastowa aktualizacja po załadowaniu
+    updateTimer();
 
-    // Lista utworów mp3 1-10
+    // Lista 10 utworów
     const songs = [];
     for (let i = 1; i <= 10; i++) {
         songs.push(`audio/${i}.mp3`);
     }
 
-    let currentIndex = 0;
+    const lastPlayed = []; // pamięta ostatnie 4 utwory
 
-    // Funkcja odtwarzania kolejnego utworu cyklicznie
     function playNext() {
+        let available = songs.filter((_, idx) => !lastPlayed.includes(idx));
+
+        // Jeśli dostępnych jest mniej niż 1, resetujemy "pamięć ostatnich 4"
+        if (available.length === 0) {
+            lastPlayed.length = 0;
+            available = [...songs];
+        }
+
+        // losujemy indeks w dostępnych
+        const randomSong = available[Math.floor(Math.random() * available.length)];
+        const songIndex = songs.indexOf(randomSong);
+
+        // odtwarzamy
         const player = document.getElementById("audioPlayer");
-        player.src = songs[currentIndex];
+        player.src = randomSong;
         player.play();
 
-        currentIndex = (currentIndex + 1) % songs.length;
+        // zapisujemy w historii ostatnich 4
+        lastPlayed.push(songIndex);
+        if (lastPlayed.length > 4) lastPlayed.shift(); // zachowujemy tylko 4 ostatnie
     }
 </script>
 
