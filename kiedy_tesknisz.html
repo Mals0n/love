@@ -27,25 +27,13 @@ body{
     width:300px;
 }
 
-h1{
-    margin-bottom:25px;
-}
-
-button{
-    padding:12px 25px;
-    border:none;
-    border-radius:25px;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:15px;
-}
-
 .progress-container{
     width:100%;
     height:8px;
     background:rgba(255,255,255,0.3);
     border-radius:10px;
     cursor:pointer;
+    margin-bottom:20px;
 }
 
 .progress{
@@ -55,6 +43,15 @@ button{
     border-radius:10px;
 }
 
+button{
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    font-size:24px;
+    cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -62,56 +59,58 @@ button{
 
 <div class="container">
 
-<h1>Nasza piosenka ❤️</h1>
+<h1>Gdy za mną tęsknisz</h1> ❤️</h1>
 
-<div class="progress-container" onclick="setProgress(event)">
+<div class="progress-container" id="progressContainer">
 <div class="progress" id="progress"></div>
 </div>
 
-<button onclick="toggleAudio()">Start / Stop</button>
+<button id="playBtn">▶</button>
 
 </div>
 
-<audio id="player" autoplay loop>
+<audio id="player">
 <source src="glos/kiedy_tesknisz.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
 const player = document.getElementById("player")
+const playBtn = document.getElementById("playBtn")
 const progress = document.getElementById("progress")
-const progressContainer = document.querySelector(".progress-container")
+const progressContainer = document.getElementById("progressContainer")
 
-function toggleAudio(){
+// PLAY / PAUSE
+playBtn.addEventListener("click", () => {
 
     if(player.paused){
         player.play()
-    }else{
+        playBtn.innerHTML = "⏸"
+    } else {
         player.pause()
+        playBtn.innerHTML = "▶"
     }
 
-}
+})
 
-player.addEventListener("timeupdate",updateProgress)
+// UPDATE PROGRESS
+player.addEventListener("timeupdate", () => {
 
-function updateProgress(){
-
-    const {duration,currentTime} = player
-
-    const percent = (currentTime/duration)*100
+    const percent = (player.currentTime / player.duration) * 100
     progress.style.width = percent + "%"
 
-}
+})
 
-function setProgress(e){
+// CLICK PROGRESS BAR
+progressContainer.addEventListener("click", (e) => {
 
     const width = progressContainer.clientWidth
     const clickX = e.offsetX
     const duration = player.duration
 
-    player.currentTime = (clickX/width)*duration
+    player.currentTime = (clickX / width) * duration
 
-}
+})
 
 </script>
 
