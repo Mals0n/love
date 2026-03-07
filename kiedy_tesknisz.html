@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gdy za mną tęsknisz</title>
+<title>Gdy tęsknisz</title>
 
 <style>
 
@@ -25,10 +25,6 @@ body{
     border-radius:20px;
     backdrop-filter:blur(10px);
     width:300px;
-}
-
-h1{
-    margin-bottom:25px;
 }
 
 .progress-container{
@@ -63,13 +59,13 @@ button{
 
 <div class="container">
 
-<h1>Gdy za mną tęsknisz❤️</h1>
+<h1>Gdy za mną tęsknisz ❤️</h1>
 
-<div class="progress-container" onclick="setProgress(event)">
+<div class="progress-container" id="progressContainer">
 <div class="progress" id="progress"></div>
 </div>
 
-<button id="playBtn" onclick="toggleAudio()">▶</button>
+<button id="playBtn">▶</button>
 
 </div>
 
@@ -80,43 +76,41 @@ button{
 <script>
 
 const player = document.getElementById("player")
-const progress = document.getElementById("progress")
-const progressContainer = document.querySelector(".progress-container")
 const playBtn = document.getElementById("playBtn")
+const progress = document.getElementById("progress")
+const progressContainer = document.getElementById("progressContainer")
 
-function toggleAudio(){
+// PLAY / PAUSE
+playBtn.addEventListener("click", () => {
 
     if(player.paused){
         player.play()
         playBtn.innerHTML = "⏸"
-    }else{
+    } else {
         player.pause()
         playBtn.innerHTML = "▶"
     }
 
-}
+})
 
-player.addEventListener("timeupdate",updateProgress)
+// UPDATE PROGRESS
+player.addEventListener("timeupdate", () => {
 
-function updateProgress(){
-
-    const duration = player.duration
-    const currentTime = player.currentTime
-
-    const percent = (currentTime/duration)*100
+    const percent = (player.currentTime / player.duration) * 100
     progress.style.width = percent + "%"
 
-}
+})
 
-function setProgress(e){
+// CLICK PROGRESS BAR
+progressContainer.addEventListener("click", (e) => {
 
     const width = progressContainer.clientWidth
     const clickX = e.offsetX
     const duration = player.duration
 
-    player.currentTime = (clickX/width)*duration
+    player.currentTime = (clickX / width) * duration
 
-}
+})
 
 </script>
 
