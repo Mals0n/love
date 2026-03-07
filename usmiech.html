@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uśmiechnij się</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ff758c,#ff7eb3);
+    font-family:Arial;
+    color:white;
+    text-align:center;
+}
+
+.container{
+    background:rgba(255,255,255,0.1);
+    padding:40px;
+    border-radius:20px;
+    backdrop-filter:blur(10px);
+    width:320px;
+}
+
+h1{
+    margin-bottom:25px;
+}
+
+.progress-container{
+    width:100%;
+    height:8px;
+    background:rgba(255,255,255,0.3);
+    border-radius:10px;
+    cursor:pointer;
+    margin-bottom:25px;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:white;
+    border-radius:10px;
+}
+
+button{
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    font-size:26px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Gdy chcesz się uśmiechnąć ❤️</h1>
+
+<div class="progress-container" id="progressContainer">
+<div class="progress" id="progress"></div>
+</div>
+
+<button id="playBtn">▶</button>
+
+</div>
+
+<audio id="player" autoplay>
+<source src="glos/usmiech.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const player = document.getElementById("player")
+const playBtn = document.getElementById("playBtn")
+const progress = document.getElementById("progress")
+const progressContainer = document.getElementById("progressContainer")
+
+// zmiana ikony gdy muzyka startuje
+player.addEventListener("play", () => {
+    playBtn.innerHTML = "⏸"
+})
+
+// zmiana ikony gdy pauza
+player.addEventListener("pause", () => {
+    playBtn.innerHTML = "▶"
+})
+
+// przycisk play/pause
+playBtn.addEventListener("click", () => {
+
+    if(player.paused){
+        player.play()
+    }else{
+        player.pause()
+    }
+
+})
+
+// aktualizacja paska
+player.addEventListener("timeupdate", () => {
+
+    if(player.duration){
+        const percent = (player.currentTime / player.duration) * 100
+        progress.style.width = percent + "%"
+    }
+
+})
+
+// kliknięcie w pasek przewija
+progressContainer.addEventListener("click", (e) => {
+
+    const width = progressContainer.clientWidth
+    const clickX = e.offsetX
+    const duration = player.duration
+
+    player.currentTime = (clickX / width) * duration
+
+})
+
+</script>
+
+</body>
+</html>
