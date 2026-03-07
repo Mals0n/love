@@ -24,7 +24,11 @@ body{
     padding:40px;
     border-radius:20px;
     backdrop-filter:blur(10px);
-    width:300px;
+    width:320px;
+}
+
+h1{
+    margin-bottom:25px;
 }
 
 .progress-container{
@@ -33,7 +37,7 @@ body{
     background:rgba(255,255,255,0.3);
     border-radius:10px;
     cursor:pointer;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
 .progress{
@@ -48,7 +52,7 @@ button{
     height:60px;
     border:none;
     border-radius:50%;
-    font-size:24px;
+    font-size:26px;
     cursor:pointer;
 }
 
@@ -69,7 +73,7 @@ button{
 
 </div>
 
-<audio id="player">
+<audio id="player" autoplay>
 <source src="glos/kiedy_tesknisz.mp3" type="audio/mpeg">
 </audio>
 
@@ -80,28 +84,38 @@ const playBtn = document.getElementById("playBtn")
 const progress = document.getElementById("progress")
 const progressContainer = document.getElementById("progressContainer")
 
-// PLAY / PAUSE
+// zmiana ikony gdy muzyka startuje
+player.addEventListener("play", () => {
+    playBtn.innerHTML = "⏸"
+})
+
+// zmiana ikony gdy pauza
+player.addEventListener("pause", () => {
+    playBtn.innerHTML = "▶"
+})
+
+// przycisk play/pause
 playBtn.addEventListener("click", () => {
 
     if(player.paused){
         player.play()
-        playBtn.innerHTML = "⏸"
-    } else {
+    }else{
         player.pause()
-        playBtn.innerHTML = "▶"
     }
 
 })
 
-// UPDATE PROGRESS
+// aktualizacja paska
 player.addEventListener("timeupdate", () => {
 
-    const percent = (player.currentTime / player.duration) * 100
-    progress.style.width = percent + "%"
+    if(player.duration){
+        const percent = (player.currentTime / player.duration) * 100
+        progress.style.width = percent + "%"
+    }
 
 })
 
-// CLICK PROGRESS BAR
+// kliknięcie w pasek przewija
 progressContainer.addEventListener("click", (e) => {
 
     const width = progressContainer.clientWidth
